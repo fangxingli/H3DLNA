@@ -1,0 +1,205 @@
+Processing action "GetProtocolInfo" from 172.16.55.23
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<u:GetProtocolInfoResponse xmlns:u="urn:schemas-upnp-org:service:ConnectionManager:1">
+			<Source></Source>
+			<Sink>http-get:*:video/x-ms-wmv:DLNA.ORG_PN=WMVMED_PRO,http-get:*:video/x-ms-asf:DLNA.ORG_PN=MPEG4_P2_ASF_SP_G726,http-get:*:video/x-ms-wmv:DLNA.ORG_PN=WMVMED_FULL,http-get:*:image/jpeg:DLNA.ORG_PN=JPEG_MED,http-get:*:video/x-ms-wmv:DLNA.ORG_PN=WMVMED_BASE,http-get:*:audio/L16;rate=44100;channels=1:DLNA.ORG_PN=LPCM,http-get:*:video/mpeg:DLNA.ORG_PN=MPEG_PS_PAL,http-get:*:video/mpeg:DLNA.ORG_PN=MPEG_PS_NTSC,http-get:*:video/x-ms-wmv:DLNA.ORG_PN=WMVHIGH_PRO,http-get:*:audio/L16;rate=44100;channels=2:DLNA.ORG_PN=LPCM,http-get:*:image/jpeg:DLNA.ORG_PN=JPEG_SM,http-get:*:video/x-ms-asf:DLNA.ORG_PN=VC1_ASF_AP_L1_WMA,http-get:*:audio/x-ms-wma:DLNA.ORG_PN=WMDRM_WMABASE,http-get:*:video/x-ms-wmv:DLNA.ORG_PN=WMVHIGH_FULL,http-get:*:audio/x-ms-wma:DLNA.ORG_PN=WMAFULL,http-get:*:audio/x-ms-wma:DLNA.ORG_PN=WMABASE,http-get:*:video/x-ms-wmv:DLNA.ORG_PN=WMVSPLL_BASE,http-get:*:video/mpeg:DLNA.ORG_PN=MPEG_PS_NTSC_XAC3,http-get:*:video/x-ms-wmv:DLNA.ORG_PN=WMDRM_WMVSPLL_BASE,http-get:*:video/x-ms-wmv:DLNA.ORG_PN=WMVSPML_BASE,http-get:*:video/x-ms-asf:DLNA.ORG_PN=MPEG4_P2_ASF_ASP_L5_SO_G726,http-get:*:image/jpeg:DLNA.ORG_PN=JPEG_LRG,http-get:*:audio/mpeg:DLNA.ORG_PN=MP3,http-get:*:video/mpeg:DLNA.ORG_PN=MPEG_PS_PAL_XAC3,http-get:*:audio/x-ms-wma:DLNA.ORG_PN=WMAPRO,http-get:*:video/mpeg:DLNA.ORG_PN=MPEG1,http-get:*:image/jpeg:DLNA.ORG_PN=JPEG_TN,http-get:*:video/x-ms-asf:DLNA.ORG_PN=MPEG4_P2_ASF_ASP_L4_SO_G726,http-get:*:audio/L16;rate=48000;channels=2:DLNA.ORG_PN=LPCM,http-get:*:audio/mpeg:DLNA.ORG_PN=MP3X,http-get:*:video/x-ms-wmv:DLNA.ORG_PN=WMVSPML_MP3,http-get:*:video/x-ms-wmv:*</Sink>
+		</u:GetProtocolInfoResponse>
+	</s:Body>
+</s:Envelope>
+Processing action "Stop" from 172.16.55.23
+Stop
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<u:StopResponse xmlns:u="urn:schemas-upnp-org:service:AVTransport:1"/>
+	</s:Body>
+</s:Envelope>
+Processing action "GetVolume" from 172.16.55.23
+GetVolume
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<u:GetVolumeResponse xmlns:u="urn:schemas-upnp-org:service:RenderingControl:1">
+			<CurrentVolume>100</CurrentVolume>
+		</u:GetVolumeResponse>
+	</s:Body>
+</s:Envelope>
+Processing action "GetMute" from 172.16.55.23
+GetMute
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<u:GetMuteResponse xmlns:u="urn:schemas-upnp-org:service:RenderingControl:1">
+			<CurrentMute>0</CurrentMute>
+		</u:GetMuteResponse>
+	</s:Body>
+</s:Envelope>
+Processing action "GetTransportInfo" from 172.16.55.23
+GetTransportInfo
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<u:GetTransportInfoResponse xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
+			<CurrentTransportState>NO_MEDIA_PRESENT</CurrentTransportState>
+			<CurrentTransportStatus>OK</CurrentTransportStatus>
+			<CurrentSpeed>1</CurrentSpeed>
+		</u:GetTransportInfoResponse>
+	</s:Body>
+</s:Envelope>
+Processing action "Stop" from 172.16.55.23
+Stop
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<u:StopResponse xmlns:u="urn:schemas-upnp-org:service:AVTransport:1"/>
+	</s:Body>
+</s:Envelope>
+Processing action "SetAVTransportURI" from 172.16.55.23
+SetAVTransportURI
+URI: http://172.16.55.23:10243/WMPNSSv4/2723947796/0_e0IyNTIzNUE3LUJEMTItNDU0Ri05OTg1LUQ0OUE2NzBDRDBGNn0uMC44.wmv
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<u:SetAVTransportURIResponse xmlns:u="urn:schemas-upnp-org:service:AVTransport:1"/>
+	</s:Body>
+</s:Envelope>
+Processing action "Play" from 172.16.55.23
+Play
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<u:PlayResponse xmlns:u="urn:schemas-upnp-org:service:AVTransport:1"/>
+	</s:Body>
+</s:Envelope>
+Processing action "GetTransportInfo" from 172.16.55.23
+GetTransportInfo
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<u:GetTransportInfoResponse xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
+			<CurrentTransportState>NO_MEDIA_PRESENT</CurrentTransportState>
+			<CurrentTransportStatus>OK</CurrentTransportStatus>
+			<CurrentSpeed>1</CurrentSpeed>
+		</u:GetTransportInfoResponse>
+	</s:Body>
+</s:Envelope>
+Processing action "Stop" from 172.16.55.23
+Stop
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<u:StopResponse xmlns:u="urn:schemas-upnp-org:service:AVTransport:1"/>
+	</s:Body>
+</s:Envelope>
+Processing action "GetTransportInfo" from 172.16.55.23
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<u:GetTransportInfoResponse xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
+			<CurrentTransportState>NO_MEDIA_PRESENT</CurrentTransportState>
+			<CurrentTransportStatus>OK</CurrentTransportStatus>
+			<CurrentSpeed>1</CurrentSpeed>
+		</u:GetTransportInfoResponse>
+	</s:Body>
+</s:Envelope>
+Processing action "Stop" from 172.16.55.23
+Stop
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<u:StopResponse xmlns:u="urn:schemas-upnp-org:service:AVTransport:1"/>
+	</s:Body>
+</s:Envelope>
+Processing action "SetAVTransportURI" from 172.16.55.23
+SetAVTransportURI
+URI: http://172.16.55.23:10243/WMPNSSv4/2723947796/0_e0IyNTIzNUE3LUJEMTItNDU0Ri05OTg1LUQ0OUE2NzBDRDBGNn0uMC44.wmv
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<u:SetAVTransportURIResponse xmlns:u="urn:schemas-upnp-org:service:AVTransport:1"/>
+	</s:Body>
+</s:Envelope>
+Processing action "Play" from 172.16.55.23
+Play
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<u:PlayResponse xmlns:u="urn:schemas-upnp-org:service:AVTransport:1"/>
+	</s:Body>
+</s:Envelope>
+Processing action "GetTransportInfo" from 172.16.55.23
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<u:GetTransportInfoResponse xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
+			<CurrentTransportState>NO_MEDIA_PRESENT</CurrentTransportState>
+			<CurrentTransportStatus>OK</CurrentTransportStatus>
+			<CurrentSpeed>1</CurrentSpeed>
+		</u:GetTransportInfoResponse>
+	</s:Body>
+</s:Envelope>
+
+
+Processing action "GetPositionInfo" from 172.16.55.194
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<u:GetPositionInfoResponse xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
+			<Track>0</Track>
+			<TrackDuration>00:00:00</TrackDuration>
+			<TrackMetaData></TrackMetaData>
+			<TrackURI></TrackURI>
+			<RelTime>00:00:00</RelTime>
+			<AbsTime>00:00:00</AbsTime>
+			<RelCount>2147483647</RelCount>
+			<AbsCount>2147483647</AbsCount>
+		</u:GetPositionInfoResponse>
+	</s:Body>
+</s:Envelope>
+
+Processing action "SetAVTransportURI" from 172.16.55.194
+SetAVTransportURI
+URI: http://119.97.149.89/vkpws.video.qq.com/flv/193/81/886m2IgwMHp.mp4?vkey=87C8AEF8C56515D63C957D81A854070B44A6E2C386461F554ADFBDF27E1E697F
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><u:SetAVTransportURIResponse xmlns:u="urn:schemas-upnp-org:service:AVTransport:1"/></s:Body></s:Envelope>
+Processing action "Play" from 172.16.55.194
+Play
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<u:PlayResponse xmlns:u="urn:schemas-upnp-org:service:AVTransport:1"/>
+	</s:Body>
+</s:Envelope>
+Processing action "GetTransportInfo" from 172.16.55.194
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+
+Processing action "GetMediaInfo" from 172.16.55.194
+RESPONSE: <?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<u:GetMediaInfoResponse xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
+			<NrTracks>0</NrTracks>
+			<MediaDuration>00:00:00</MediaDuration>
+			<CurrentURI>
+		http://119.97.149.89/vkpws.video.qq.com/flv/193/81/886m2IgwMHp.mp4?vkey=87C8AEF8C56515D63C957D81A854070B44A6E2C386461F554ADFBDF27E1E697F
+			</CurrentURI>
+			<CurrentURIMetaData>&lt;DIDL-Lite xmlns="urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:upnp="urn:schemas-upnp-org:metadata-1-0/upnp/"&gt;
+   &lt;item id="886m2IgwMHp" parentID="-1" restricted="1"&gt;
+      &lt;upnp:storageMedium&gt;UNKNOWN&lt;/upnp:storageMedium&gt;
+      &lt;upnp:writeStatus&gt;UNKNOWN&lt;/upnp:writeStatus&gt;
+      &lt;dc:title&gt;林肯总统是吸血鬼猎人&lt;/dc:title&gt;
+      &lt;upnp:class&gt;object.item.videoItem.movie&lt;/upnp:class&gt;
+      &lt;res protocolInfo="http-get:*:video/mp4:*"&gt;http://119.97.149.89/vkpws.video.qq.com/flv/193/81/886m2IgwMHp.mp4?vkey=87C8AEF8C56515D63C957D81A854070B44A6E2C386461F554ADFBDF27E1E697F&lt;/res&gt;
+   &lt;/item&gt;
+&lt;/DIDL-Lite&gt;
+			</CurrentURIMetaData>
+			<NextURI>NOT_IMPLEMENTED</NextURI>
+			<NextURIMetaData>NOT_IMPLEMENTED</NextURIMetaData>
+			<PlayMedium>NONE</PlayMedium>
+			<RecordMedium>NOT_IMPLEMENTED</RecordMedium>
+			<WriteStatus>NOT_IMPLEMENTED</WriteStatus>
+		</u:GetMediaInfoResponse>
+	</s:Body>
+</s:Envelope>

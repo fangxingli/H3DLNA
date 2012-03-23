@@ -1,0 +1,70 @@
+/******************************************************************************
+* intfMntn.h - MNTN模块外部接口声明头文件
+*
+* Copyright 1994-2008 Routon Electronic Co.,Ltd.
+*
+* modification history:
+* -----------------------------------------------
+* 版本  日期      作者      说明
+* -----------------------------------------------
+* 01a, 2009-01-15, tongjia, 	Create
+******************************************************************************/
+
+#ifndef _INTF_WEBTV_H
+#define _INTF_WEBTV_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif   /*__cplusplus */
+
+/* Include */
+#include "intfDef.h"
+
+/* Macro define */
+
+
+/* 维护模块消息定义 */
+enum
+{
+	MSG_ONLINE_ENTER_PLAY=MSG_BASE_WEBTV,				/* 进入在线播放器 */
+	MSG_ONLINE_EXIT_PLAY,				/* 退出在线播放器 */
+	MSG_ONLINE_SEND_DATA,
+	MSG_LIBWEBTV_QUIT_LAST,
+
+// FOR THE USE OF DLNA AND AIRPLAY
+	MSG_ROUTON_MPLAYER_START,
+	MSG_ROUTON_PAUSE,
+	MSG_ROUTON_PLAY,
+	MSG_ROUTON_STOP,
+	MSG_ROUTON_ADD_TO_PLAYLIST,
+	MSG_ROUTON_SET_SCRUB,
+	MSG_ROUTON_GET_SCRUB,
+	MSG_ROUTON_GET_SCRUB_RET,
+	MSG_ROUTON_MPLAYER_IS_RUNNING,
+	MSG_ROUTON_MPLAYER_IS_RUNNING_RET,
+	MSG_ROUTON_IS_PLAYING,
+	MSG_ROUTON_IS_PLAYING_RET,
+	MSG_ROUTON_SET_VOLUME,
+	MSG_ROUTON_ESC,
+	MSG_ROUTON_AIRPLAYER_START,
+
+	
+};
+
+
+
+/* Typedef declaration */
+
+/* Global declaration */
+
+/* Function declaration */
+
+/* Static Variable define */
+
+
+#ifdef __cplusplus
+}
+#endif  /* __cplusplus */
+
+#endif	/* _INTF_WEBTV_H */
+

@@ -1,0 +1,332 @@
+/*****************************************************************
+|
+|   Platinum - Test UPnP A/V MediaRenderer
+|
+| Copyright (c) 2004-2010, Plutinosoft, LLC.
+| All rights reserved.
+| http://www.plutinosoft.com
+|
+| This program is free software; you can redistribute it and/or
+| modify it under the terms of the GNU General Public License
+| as published by the Free Software Foundation; either version 2
+| of the License, or (at your option) any later version.
+|
+| OEMs, ISVs, VARs and other distributors that combine and 
+| distribute commercially licensed software with Platinum software
+| and do not wish to distribute the source code for the commercially
+| licensed software under version 2, or (at your option) any later
+| version, of the GNU General Public License (the "GPL") must enter
+| into a commercial license agreement with Plutinosoft, LLC.
+| 
+| This program is distributed in the hope that it will be useful,
+| but WITHOUT ANY WARRANTY; without even the implied warranty of
+| MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+| GNU General Public License for more details.
+|
+| You should have received a copy of the GNU General Public License
+| along with this program; see the file LICENSE.txt. If not, write to
+| the Free Software Foundation, Inc., 
+| 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+| http://www.gnu.org/licenses/gpl-2.0.html
+|
+ ****************************************************************/
+
+/*----------------------------------------------------------------------
+|   includes
++---------------------------------------------------------------------*/
+#include "PltUPnP.h"
+#include "PltMediaRenderer.h"
+
+#include <stdlib.h>
+
+#define ROUTON
+
+#ifdef ROUTON
+#include "cRenderer.h"
+NPT_SET_LOCAL_LOGGER("platinum.media.renderer")
+#define PlayerIsRunning() (mplayer->routon_mplayer_is_running())
+#define PlayerIsNotRunning() (!(mplayer->routon_mplayer_is_running()))
+#define Float2Time(__f, __buf) sprintf(__buf, "%d:%d:%d", ((int)__f)/3600, ((int)__f)/60, ((int)__f)%60)
+#endif
+/*----------------------------------------------------------------------
+|   globals
++---------------------------------------------------------------------*/
+struct Options {
+    const char* friendly_name;
+} Options;
+
+/*----------------------------------------------------------------------
+|   PrintUsageAndExit
++---------------------------------------------------------------------*/
+static void
+PrintUsageAndExit(char** args)
+{
+    fprintf(stderr, "usage: %s [-f <friendly_name>]\n", args[0]);
+    fprintf(stderr, "-f : optional upnp server friendly name\n");
+    fprintf(stderr, "<path> : local path to serve\n");
+    exit(1);
+}
+
+/*----------------------------------------------------------------------
+|   ParseCommandLine
++---------------------------------------------------------------------*/
+static void
+ParseCommandLine(char** args)
+{
+    const char* arg;
+    char**      tmp = args+1;
+
+    /* default values */
+    Options.friendly_name = NULL;
+
+    while ((arg = *tmp++)) {
+        if (!strcmp(arg, "-f")) {
+            Options.friendly_name = *tmp++;
+        } else {
+            fprintf(stderr, "ERROR: too many arguments\n");
+            PrintUsageAndExit(args);
+        }
+    }
+}
+
+#ifdef ROUTON
+/*
+ * OnSet*: Server=>Renderer=>Player action->GetArgumentValue ( ArgumentDirction: In  )
+ * OnGet*: Player=>Renderer=>Server action->SetArugmentValue ( ArgumentDirction: Out  )
+ */
+class PLT_ROUTON_H3 : public PLT_MediaRenderer
+{
+public:
+	PLT_ROUTON_H3(class cRenderer *p, const char * friendly_name, bool show_ip=false, const char *uuid=NULL, unsigned int port=0, bool port_rebind=false) : PLT_MediaRenderer(friendly_name, show_ip, uuid, port, port_rebind) {
+		mplayer = p;	
+	}
+	
+	// Connection Manager
+	// NPT_Result OnGetCurrentConnectionInfo(PLT_ActionReference &action) { }
+
+	// AVTransport
+	NPT_Result OnGetPositionInfo(PLT_ActionReference& action){   
+		float duration_f, position_f;
+		char duration_s[8], position_s[8];
+	//	if( mplayer->routon_mplayer_is_running )
+			mplayer->routon_get_scrub(&duration_f, &position_f);
+		Float2Time(duration_f, duration_s);
+		Float2Time(position_f, position_s);
+		printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^Duration: %f(%s), position: %f(%s)\n",duration_f, duration_s, position_f, position_s);
+		NPT_CHECK_WARNING(action->SetArgumentValue("Track", "1"));
+		NPT_CHECK_WARNING(action->SetArgumentValue("TrackDuration", duration_s));
+		NPT_CHECK_WARNING(action->SetArgumentValue("TrackMetaData", ""));
+		NPT_CHECK_WARNING(action->SetArgumentValue("TrackURI", "http://172.16.55.23:10243/WMPNSSv4/2723947796/0_e0IyNTIzNUE3LUJEMTItNDU0Ri05OTg1LUQ0OUE2NzBDRDBGNn0uMC44.wmv"));
+		NPT_CHECK_WARNING(action->SetArgumentValue("RelTime", position_s));//one media relative time
+		NPT_CHECK_WARNING(action->SetArgumentValue("AbsTime", position_s));//all media time 
+		NPT_CHECK_WARNING(action->SetArgumentValue("RelCount", "26"));
+		NPT_CHECK_WARNING(action->SetArgumentValue("AbsCount", "26"));
+		// update service state variables
+		/*
+		PLT_Service* serviceAVT;
+		NPT_CHECK_WARNING(FindServiceByType("urn:schemas-upnp-org:service:AVTransport:1", serviceAVT));
+		serviceAVT->SetStateVariable("CurrentTrackDuration", "00:30:00");
+		*/
+
+		return NPT_SUCCESS;  
+	}
+
+	NPT_Result OnSetAVTransportURI(PLT_ActionReference& action){
+		// default implementation is using state variable
+		NPT_String uri;
+		NPT_CHECK_WARNING(action->GetArgumentValue("CurrentURI", uri));
+
+		NPT_String metadata;
+		NPT_CHECK_WARNING(action->GetArgumentValue("CurrentURIMetaData", metadata));
+
+		PLT_Service* serviceAVT;
+		NPT_CHECK_WARNING(FindServiceByType("urn:schemas-upnp-org:service:AVTransport:1", serviceAVT));
+
+		// update service state variables
+		serviceAVT->SetStateVariable("AVTransportURI", uri);
+		serviceAVT->SetStateVariable("AVTransportURIMetaData", metadata);
+		printf("URI: %s, Length:%d\n", uri.GetChars(), strlen(uri.GetChars()));
+
+		// check uri, if null then quit player
+		// quit twice ,then SegError
+		if( strlen(uri.GetChars()) == 0 ){
+			NPT_CHECK_WARNING(FindServiceByType("urn:schemas-upnp-org:service:AVTransport:1", serviceAVT));
+			serviceAVT->SetStateVariable("TransportState", "STOPPED");
+			serviceAVT->SetStateVariable("TransportStatus", "OK");
+
+			printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+			mplayer->routon_mplayer_quit();
+			return NPT_SUCCESS;
+		}
+
+		if( !(mplayer->routon_mplayer_is_running()) ){
+			mplayer->routon_mplayer_start();
+		}
+
+		// just add the uri to list, then the Play Action is responsible for playing
+		mplayer->routon_add_to_playlist((char *)(uri.GetChars()), 1);
+
+		return NPT_SUCCESS;
+	}
+
+	NPT_Result OnNext(PLT_ActionReference &action){ return NPT_SUCCESS; }
+
+	NPT_Result OnPause(PLT_ActionReference &action){
+		mplayer->routon_pause();
+
+		// update service state variables
+		PLT_Service* serviceAVT;
+		NPT_CHECK_WARNING(FindServiceByType("urn:schemas-upnp-org:service:AVTransport:1", serviceAVT));
+		serviceAVT->SetStateVariable("TransportState", "PAUSED_PLAYBACK");
+		serviceAVT->SetStateVariable("TransportStatus", "OK");
+	
+
+		return NPT_SUCCESS;  
+	}
+
+	/*
+	 *  GetProtocolInfo->Stop->GetVolume->GetMute->GetTransportInfo->Stop->SetAVTransportURI->Play
+	 */
+	NPT_Result OnPlay(PLT_ActionReference &action){ 
+
+		// update service state variables
+		PLT_Service* serviceAVT;
+		NPT_CHECK_WARNING(FindServiceByType("urn:schemas-upnp-org:service:AVTransport:1", serviceAVT));
+		serviceAVT->SetStateVariable("TransportState", "PLAYING");
+		serviceAVT->SetStateVariable("TransportStatus", "OK");
+
+		// invoke player
+		if( !(mplayer->routon_mplayer_is_running()) ){
+			mplayer->routon_mplayer_start();
+		}
+
+		mplayer->routon_play();
+
+		return NPT_SUCCESS;  
+	}
+
+	NPT_Result OnPrevious(PLT_ActionReference &action){ return NPT_SUCCESS;  }
+
+	NPT_Result OnSeek(PLT_ActionReference &action){
+		int h,m,s;
+		//if( !routon_is_seekable() )
+		//	return NPT_ERROR_NOT_IMPLEMENTED;
+
+		// update service state variables
+		PLT_Service* serviceAVT;
+#if 0
+		NPT_String stateBeforeSeek;
+		NPT_CHECK_WARNING(FindServiceByType("urn:schemas-upnp-org:service:AVTransport:1", serviceAVT));
+		serviceAVT->GetStateVariableValue("TransportState", stateBeforeSeek);
+		serviceAVT->SetStateVariable("TransportStatus", "OK");
+		printf("$$$$$$$$$$$$$$$$$$ stateBeforeSeek: %s$$$$$$$$$$$$$$$$$$$$$$$$$$\n", stateBeforeSeek.GetChars());
+#endif
+
+		NPT_CHECK_WARNING(FindServiceByType("urn:schemas-upnp-org:service:AVTransport:1", serviceAVT));
+		serviceAVT->SetStateVariable("TransportState", "TRANSITIONING");
+		serviceAVT->SetStateVariable("TransportStatus", "OK");
+
+		NPT_String unit;
+		NPT_CHECK_WARNING(action->GetArgumentValue("Unit", unit));
+		NPT_String target;
+		NPT_CHECK_WARNING(action->GetArgumentValue("Target", target));
+		printf("$$$$$$$$$$$$$$$$$$Unit: %s, target: %s$$$$$$$$$$$$$$$$$$$$$$$$$$\n", unit.GetChars(), target.GetChars());
+
+		sscanf(target.GetChars(), "%d:%d:%d", &h, &m, &s);
+		mplayer->routon_set_scrub(h*3600+m*60+s);
+		mplayer->routon_play();
+
+		// update service state variables
+		NPT_CHECK_WARNING(FindServiceByType("urn:schemas-upnp-org:service:AVTransport:1", serviceAVT));
+		serviceAVT->SetStateVariable("TransportState", "PLAYING");//stateBeforeSeek.GetChars());
+		serviceAVT->SetStateVariable("TransportStatus", "OK");
+				
+		return NPT_SUCCESS;  
+	}
+
+	/*
+	 * 
+	 */
+	NPT_Result OnStop(PLT_ActionReference &action){
+		mplayer->routon_stop();
+	
+		// update service state variables
+		PLT_Service* serviceAVT;
+		NPT_CHECK_WARNING(FindServiceByType("urn:schemas-upnp-org:service:AVTransport:1", serviceAVT));
+		serviceAVT->SetStateVariable("TransportState", "STOPPED");
+		serviceAVT->SetStateVariable("TransportStatus", "OK");
+
+		return NPT_SUCCESS;  
+	}
+
+	//NPT_Result OnSetPlayMode(PLT_ActionReference &action){ return NPT_SUCCESS;  }
+	
+	// Rendering Control
+#if 0
+	NPT_Result OnGetVolume(PLT_ActionReference &action){ return NPT_SUCCESS;  }
+	NPT_Result OnGetMute(PLT_ActionReference &action){ return NPT_SUCCESS;  }
+#endif
+	NPT_Result OnSetVolume(PLT_ActionReference &action){
+		NPT_String volume;
+		NPT_CHECK_WARNING(action->GetArgumentValue("DesiredVolume", volume));
+		printf("Volume: %s\n", volume.GetChars());
+	
+		mplayer->routon_set_volume(atoi(volume.GetChars()));
+		return NPT_SUCCESS;  
+	}
+
+	NPT_Result OnSetVolumeDB(PLT_ActionReference &action){ return NPT_SUCCESS;  }
+	NPT_Result OnGetVolumeDBRange(PLT_ActionReference &action){ return NPT_SUCCESS;  }
+	NPT_Result OnSetMute(PLT_ActionReference &action){ return NPT_SUCCESS;  }
+
+	// By Lee
+
+	~PLT_ROUTON_H3(){}
+private:
+	class cRenderer *mplayer;
+};
+#endif
+
+/*----------------------------------------------------------------------
+|   main
++---------------------------------------------------------------------*/
+int
+main(int /* argc */, char** argv)
+{   
+    PLT_UPnP upnp;
+
+    /* parse command line */
+    ParseCommandLine(argv);
+    class cRenderer *player =  new cRenderer();
+
+#ifdef ROUTON
+	PLT_ROUTON_H3 *h3_renderer = new PLT_ROUTON_H3(player, Options.friendly_name?Options.friendly_name:"Platinum Media Renderer",
+                              false,
+                              "e6572b54-f3c7-2d91-2fb5-b757f2537e21");
+	PLT_DeviceHostReference device(h3_renderer);
+#endif
+    upnp.AddDevice(device);
+    bool added = true;
+
+    upnp.Start();
+
+#if 1
+    char buf[256];
+    while (gets(buf)) {
+        if (*buf == 'q')
+            break;
+
+        if (*buf == 's') {
+            if (added) {
+                upnp.RemoveDevice(device);
+            } else {
+                upnp.AddDevice(device);
+            }
+            added = !added;
+        }
+    }
+#endif
+
+    upnp.Stop();
+    return 0;
+}
